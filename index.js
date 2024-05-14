@@ -1,7 +1,13 @@
 'use strict';
 
-const events = require('../eventPool.js');
+const io = require('socket.io-client');
+
+require('dotenv').config();
+
+const URL = process.env.URL;
+
+const hubConnection = io.connect(URL);
 
 const handlePackageReadyForPickup = require('./handler.js');
 
-events.on('package-ready-for-pickup', handlePackageReadyForPickup);
+hubConnection.on('package-ready-for-pickup', handlePackageReadyForPickup);

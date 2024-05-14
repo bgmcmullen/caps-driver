@@ -1,12 +1,17 @@
 'use strict';
 
-const events = require('../eventPool.js');
+const io = require('socket.io-client');
+
+const URL = process.env.URL;
+
+const hubConnection = io.connect(URL);
 
 function handlePackageReadyForPickup(payload){
+  console.log('----------------------');
   console.log(`DRIVER SAYS: I picked up order ${payload.orderId}`)
-  events.emit('in-transit', payload);
+  hubConnection.emit('in-transit', payload);
   console.log(`DRIVER SAYS: I delivered order ${payload.orderId}`)
-  events.emit('delivered', payload);
+  hubConnection.emit('delivered', payload);
 }
 
 module.exports = handlePackageReadyForPickup;
